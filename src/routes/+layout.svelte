@@ -47,13 +47,13 @@
 					<div class="flex flex-col gap-4">
 						{#each filteredExamples as { group, examples }}
 							<div>
-								<span class="text-2xl capitalize text-gray-400">{group}</span>
+								<span class="text-xl capitalize text-gray-400">{group}</span>
 								<div class="flex flex-col">
 									{#each examples as { href, title }}
 										<a
 											{href}
 											class={clsx(
-												'w-fit text-xl capitalize hover:underline',
+												'w-fit capitalize hover:underline',
 												$page.url.pathname === href ? 'text-black underline' : 'text-gray-600'
 											)}>{title}</a
 										>
