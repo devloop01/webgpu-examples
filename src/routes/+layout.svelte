@@ -13,14 +13,20 @@
 
 	const examples = $state<Example[]>([
 		{
-			group: 'Basic',
-			title: 'Triangle',
-			href: '/triangle'
+			group: 'Basics',
+			title: 'Blank',
+			href: '/basics-blank'
 		},
+		{
+			group: 'Basics',
+			title: 'Triangle',
+			href: '/basics-triangle'
+		},
+
 		{
 			group: 'Advanced',
 			title: 'Cube',
-			href: '/cube'
+			href: '/advanced-cube'
 		}
 	]);
 

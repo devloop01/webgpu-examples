@@ -5,3 +5,14 @@ export const load = (async ({ params }) => {
 		page: params.page
 	};
 }) satisfies PageLoad;
+
+export const entries = () => {
+	return [
+		// Basics
+		{ page: 'basics-blank' },
+		{ page: 'basics-triangle' },
+
+		// Advanced
+		{ page: 'advanced-cube' }
+	];
+};
