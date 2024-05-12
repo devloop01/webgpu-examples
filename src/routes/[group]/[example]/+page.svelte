@@ -1,12 +1,17 @@
 <script lang="ts">
 	import { WebGPU } from '$lib/webgpu';
-	import { renderBasic } from '$lib/webgpu/examples/basics';
 
-	const { data } = $props();
+	let { data } = $props();
+
+	const { group, example } = $derived(data);
 
 	let canvas = $state<HTMLCanvasElement | undefined>();
 	let wgpu = $state<WebGPU | undefined>();
 	let rafId = $state(0);
+
+	const renderFn = $derived.by(async () => {
+		return (await import(`$lib/webgpu/examples/${group}/${example}.ts`)).default as (wgpu: WebGPU) => void;
+	});
 
 	$effect(() => {
 		if (canvas) {
@@ -24,12 +29,11 @@
 		};
 	});
 
-	function render() {
+	async function render() {
 		if (!wgpu) return;
 
-		wgpu.render(() => {
-			renderBasic(wgpu!);
-		});
+		const fn = await renderFn;
+		wgpu.render(fn);
 
 		rafId = requestAnimationFrame(render);
 	}

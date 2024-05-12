@@ -38,10 +38,7 @@
 					<div>
 						<a
 							href="/"
-							class={clsx(
-								'w-fit hover:underline',
-								$page.url.pathname === '/' ? 'opacity-100' : 'opacity-65'
-							)}
+							class={clsx('w-fit hover:underline', $page.url.pathname === '/' ? 'opacity-100' : 'opacity-65')}
 						>
 							About
 						</a>
@@ -50,14 +47,14 @@
 					<div class="flex flex-col gap-4">
 						{#each filteredExamples as { group, examples }}
 							<div>
-								<span class="text-gray-500">{group}</span>
+								<span class="text-2xl capitalize text-gray-400">{group}</span>
 								<div class="flex flex-col">
 									{#each examples as { href, title }}
 										<a
 											{href}
 											class={clsx(
-												'w-fit hover:underline',
-												$page.url.pathname === href ? 'opacity-100' : 'opacity-65'
+												'w-fit text-xl capitalize hover:underline',
+												$page.url.pathname === href ? 'text-black underline' : 'text-gray-600'
 											)}>{title}</a
 										>
 									{/each}

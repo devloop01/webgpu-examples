@@ -1,5 +1,7 @@
 import { groupBy } from '@/lib/utils';
 
+const modules = import.meta.glob('$lib/webgpu/examples/**/*.ts');
+
 type Example = {
 	group?: string;
 	title: string;
@@ -7,24 +9,14 @@ type Example = {
 };
 
 export const load = async () => {
-	const examples: Example[] = [
-		{
-			group: 'Basics',
-			title: 'Blank',
-			href: '/basics-blank'
-		},
-		{
-			group: 'Basics',
-			title: 'Triangle',
-			href: '/basics-triangle'
-		},
+	const examples = Object.keys(modules).map((path) => {
+		// eslint-disable-next-line prefer-const
+		let [group, title] = path.split('/').slice(-2);
 
-		{
-			group: 'Advanced',
-			title: 'Cube',
-			href: '/advanced-cube'
-		}
-	];
+		title = title.replace('.ts', '');
+
+		return { group, title, href: `/${group}/${title}` } satisfies Example;
+	});
 
 	const groupedExamples = Object.entries(groupBy(examples, ({ group }) => group || '')).map(
 		([group, examples]) => ({ group, examples })

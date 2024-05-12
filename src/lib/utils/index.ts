@@ -7,3 +7,5 @@ export function groupBy<T, K extends PropertyKey>(arr: T[], keySelector: (i: T) 
 		{} as Record<K, T[]>
 	);
 }
+
+export const captalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);

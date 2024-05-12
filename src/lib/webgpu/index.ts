@@ -49,10 +49,10 @@ export class WebGPU {
 		}
 	}
 
-	render(callback?: () => void) {
+	render(callback?: (wgpu: this) => void) {
 		if (!this.initialized) return;
 
-		if (callback) callback();
+		if (callback) callback(this);
 	}
 
 	private setupResize() {
