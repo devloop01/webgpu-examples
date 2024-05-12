@@ -10,12 +10,16 @@ type Example = {
 
 export const load = async () => {
 	const examples = Object.keys(modules).map((path) => {
-		// eslint-disable-next-line prefer-const
 		let [group, title] = path.split('/').slice(-2);
 
 		title = title.replace('.ts', '');
 
-		return { group, title, href: `/${group}/${title}` } satisfies Example;
+		const href = `/${group}/${title}`;
+
+		group = group.replace(/(\d+)-/, '');
+		group = group.replace(/-/g, ' ');
+
+		return { group, title, href } satisfies Example;
 	});
 
 	const groupedExamples = Object.entries(groupBy(examples, ({ group }) => group || '')).map(

@@ -8,8 +8,12 @@ export const load = async ({ params }) => {
 
 export const entries = () => {
 	const paths = Object.keys(modules).map((path) => {
-		const [group, example] = path.split('/').slice(-2);
-		return { group, example: example.replace('.ts', '') };
+		// eslint-disable-next-line prefer-const
+		let [group, example] = path.split('/').slice(-2);
+
+		example = example.replace('.ts', '');
+
+		return { group, example };
 	});
 
 	return paths;
