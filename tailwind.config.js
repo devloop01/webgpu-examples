@@ -58,7 +58,8 @@ const config = {
 				inter: ['var(--font-inter)', ...fontFamily.sans]
 			}
 		}
-	}
+	},
+	plugins: [require('@tailwindcss/typography')]
 };
 
 export default config;
