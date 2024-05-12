@@ -1,45 +1,22 @@
 <script lang="ts">
+	import { page } from '$app/stores';
+	import clsx from 'clsx';
+
 	import '@/styles/app.css';
 
-	let { children } = $props();
+	let { children, data } = $props();
+
+	const { groupedExamples } = data;
 
 	let search = $state('');
 
-	type Example = {
-		group?: string;
-		title: string;
-		href: string;
-	};
-
-	const examples = $state<Example[]>([
-		{
-			group: 'Basics',
-			title: 'Blank',
-			href: '/basics-blank'
-		},
-		{
-			group: 'Basics',
-			title: 'Triangle',
-			href: '/basics-triangle'
-		},
-
-		{
-			group: 'Advanced',
-			title: 'Cube',
-			href: '/advanced-cube'
-		}
-	]);
-
-	const groupedExamples = $derived(
-		Object.entries(Object.groupBy(examples, ({ group }) => group || '')).map(
-			([group, examples]) => ({ group, examples })
-		)
-	);
-
-	const filteredGroupedExamples = $derived(
-		groupedExamples.filter(({ examples }) =>
-			examples?.some(({ title }) => title.toLowerCase().includes(search.toLowerCase()))
-		)
+	const filteredExamples = $derived(
+		groupedExamples
+			.flatMap(({ group, examples }) => ({
+				group,
+				examples: examples.filter(({ title }) => title.toLowerCase().includes(search.toLowerCase()))
+			}))
+			.filter(({ examples }) => examples.length > 0)
 	);
 </script>
 
@@ -57,18 +34,38 @@
 						placeholder="Search"
 					/>
 				</div>
-				{#each filteredGroupedExamples as { group, examples }}
+				<div class="flex flex-col gap-4">
 					<div>
-						<span class="text-gray-500">{group}</span>
-						<div class="flex flex-col">
-							{#if examples}
-								{#each examples as { href, title }}
-									<a {href} class="hover:underline">{title}</a>
-								{/each}
-							{/if}
-						</div>
+						<a
+							href="/"
+							class={clsx(
+								'w-fit hover:underline',
+								$page.url.pathname === '/' ? 'opacity-100' : 'opacity-65'
+							)}
+						>
+							About
+						</a>
 					</div>
-				{/each}
+
+					<div class="flex flex-col gap-4">
+						{#each filteredExamples as { group, examples }}
+							<div>
+								<span class="text-gray-500">{group}</span>
+								<div class="flex flex-col">
+									{#each examples as { href, title }}
+										<a
+											{href}
+											class={clsx(
+												'w-fit hover:underline',
+												$page.url.pathname === href ? 'opacity-100' : 'opacity-65'
+											)}>{title}</a
+										>
+									{/each}
+								</div>
+							</div>
+						{/each}
+					</div>
+				</div>
 			</div>
 		</aside>
 		<main class="relative">
