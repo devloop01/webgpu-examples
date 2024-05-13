@@ -10,6 +10,7 @@ export class WebGPU {
 	debug: boolean;
 
 	initialized: boolean;
+	destroyed: boolean;
 
 	context: GPUCanvasContext;
 	adapter: GPUAdapter;
@@ -23,6 +24,7 @@ export class WebGPU {
 		this.debug = debug || false;
 
 		this.initialized = false;
+		this.destroyed = false;
 
 		this.init().then(() => {
 			this.setupResize();
@@ -79,9 +81,11 @@ export class WebGPU {
 	}
 
 	destroy() {
-		this.log('Destroyed!');
-
 		this.#resizeObserver.disconnect();
+
+		this.destroyed = true;
+
+		this.log('Destroyed!');
 	}
 
 	private async getGPU() {
