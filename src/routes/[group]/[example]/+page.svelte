@@ -34,7 +34,7 @@
 	});
 
 	async function render() {
-		if (!wgpu || !renderFn) return;
+		if (!wgpu) return;
 
 		wgpu.render(renderFn);
 
