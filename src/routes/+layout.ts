@@ -22,6 +22,7 @@ export const load = async () => {
 
 		// replace dashes with spaces
 		group = group.replace(/-/g, ' ');
+		title = title.replace(/-/g, ' ');
 
 		return { group, title, href } satisfies Example;
 	});
