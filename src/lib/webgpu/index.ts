@@ -9,6 +9,7 @@ export class WebGPU {
 	canvas: HTMLCanvasElement;
 	debug: boolean;
 
+	isSupported: boolean;
 	initialized: boolean;
 	destroyed: boolean;
 
@@ -28,16 +29,19 @@ export class WebGPU {
 	}
 
 	init() {
-		return new Promise<this>((resolve) => {
-			this.setup().then(() => {
-				resolve(this);
-			});
+		return new Promise<this>((resolve, reject) => {
+			this.setup()
+				.then(() => {
+					if (this.isSupported) resolve(this);
+					else reject('WebGPU is not supported');
+				})
+				.catch(reject);
 		});
 	}
 
 	private async setup() {
 		try {
-			const { adapter, device } = await this.getGPU();
+			const { adapter, device } = await WebGPU.getGPU();
 			const { context, prsentationFormat } = this.getGPUContext(device);
 
 			this.adapter = adapter;
@@ -49,10 +53,14 @@ export class WebGPU {
 
 			this.initialized = true;
 			this.log('Initialized!');
+
+			this.isSupported = true;
 		} catch (error) {
 			const err = error as Error;
 			this.log('Could not be initialized!');
 			this.log(err.message);
+
+			this.isSupported = false;
 		}
 	}
 
@@ -86,27 +94,13 @@ export class WebGPU {
 	}
 
 	destroy() {
+		if (!this.initialized) return;
+
 		this.#resizeObserver.disconnect();
 
 		this.destroyed = true;
 
 		this.log('Destroyed!');
-	}
-
-	private async getGPU() {
-		if (!navigator.gpu) {
-			throw new Error('This Browser does not support WebGPU!');
-		}
-
-		const adapter = await navigator.gpu.requestAdapter();
-
-		if (!adapter) {
-			throw new Error('No GPU adapter found');
-		}
-
-		const device = await adapter.requestDevice();
-
-		return { adapter, device };
 	}
 
 	private getGPUContext(device: GPUDevice) {
@@ -124,5 +118,21 @@ export class WebGPU {
 
 	private log(message: string) {
 		if (this.debug) console.log(`[WebGPU]: ${message}`);
+	}
+
+	static async getGPU() {
+		if (!navigator.gpu) {
+			throw new Error('This Browser does not support WebGPU!');
+		}
+
+		const adapter = await navigator.gpu.requestAdapter();
+
+		if (!adapter) {
+			throw new Error('No GPU adapter found');
+		}
+
+		const device = await adapter.requestDevice();
+
+		return { adapter, device };
 	}
 }

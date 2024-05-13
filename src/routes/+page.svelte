@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { WebGPU } from '@/lib/webgpu';
+
 	type Resource = {
 		title: string;
 		href: string;
@@ -18,6 +20,14 @@
 			href: 'https://webgpu.github.io/webgpu-samples/'
 		}
 	];
+
+	let isWebGPUSupported = $state(true);
+
+	$effect(() => {
+		WebGPU.getGPU()
+			.then(() => (isWebGPUSupported = true))
+			.catch(() => (isWebGPUSupported = false));
+	});
 </script>
 
 <div class="flex flex-col gap-4 px-6 py-6 pr-6 lg:py-8">
@@ -30,6 +40,13 @@
 			the GPU. WebGPU is based on the Vulkan API and is designed to provide a lower-level alternative to
 			WebGL.
 		</p>
+
+		{#if !isWebGPUSupported}
+			<h3 class="text-red-500">WebGPU is not supported in this browser.</h3>
+			<p>
+				see <a href="https://caniuse.com/?search=webgpu" target="_blank">caniuse.com</a> for more information.
+			</p>
+		{/if}
 
 		<h3>Resources</h3>
 		<ul>
