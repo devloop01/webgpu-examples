@@ -25,15 +25,17 @@ export class WebGPU {
 
 		this.initialized = false;
 		this.destroyed = false;
+	}
 
-		this.init().then(() => {
-			this.setupResize();
-
-			this.initialized = true;
+	init() {
+		return new Promise<this>((resolve) => {
+			this.setup().then(() => {
+				resolve(this);
+			});
 		});
 	}
 
-	private async init() {
+	private async setup() {
 		try {
 			const { adapter, device } = await this.getGPU();
 			const { context, prsentationFormat } = this.getGPUContext(device);
@@ -43,6 +45,9 @@ export class WebGPU {
 			this.context = context;
 			this.presentationFormat = prsentationFormat;
 
+			this.setupResize();
+
+			this.initialized = true;
 			this.log('Initialized!');
 		} catch (error) {
 			const err = error as Error;

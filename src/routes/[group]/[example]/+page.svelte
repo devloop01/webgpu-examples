@@ -20,8 +20,9 @@
 
 	$effect(() => {
 		if (initFn) {
-			console.log('initFn');
-			renderFn = initFn(wgpu!);
+			wgpu?.init().then((gpu) => {
+				renderFn = initFn?.(gpu);
+			});
 		}
 	});
 
