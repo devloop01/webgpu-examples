@@ -3,34 +3,25 @@
 
 	let { data } = $props();
 
-	const { group, example } = $derived(data);
+	const { module: initFn } = $derived(data);
 
 	let canvas: HTMLCanvasElement | undefined;
 	let wgpu: WebGPU | undefined;
 	let rafId = 0;
 
-	let initFn = $state<(wgpu: WebGPU) => () => void>();
 	let renderFn: (() => void) | undefined;
 
 	$effect(() => {
-		import(`$lib/webgpu/examples/${group}/${example}.ts`).then((m) => {
-			initFn = m.default;
-		});
-	});
+		initFn;
 
-	$effect(() => {
-		if (initFn) {
-			wgpu?.init().then((gpu) => {
-				renderFn = initFn?.(gpu);
-			});
-		}
-	});
-
-	$effect(() => {
 		if (canvas) {
 			wgpu = new WebGPU({
-				canvas
-				// debug: true
+				canvas,
+				debug: true
+			});
+
+			wgpu.init().then((gpu) => {
+				renderFn = initFn(gpu);
 			});
 		}
 

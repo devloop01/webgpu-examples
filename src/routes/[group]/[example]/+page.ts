@@ -1,3 +1,7 @@
+import type { WebGPU } from '@/lib/webgpu/index.js';
+
+type InitFn = (webgpu: WebGPU) => () => void;
+
 const modules = Object.keys(import.meta.glob('$lib/webgpu/examples/**/*.ts'));
 
 export const load = async ({ params }) => {
@@ -6,7 +10,9 @@ export const load = async ({ params }) => {
 	const [modulePath] = modules.filter((path) => path.includes(group));
 	const [folder] = modulePath.split('/').slice(-2);
 
-	return { group: folder, example };
+	const module = (await import(`$lib/webgpu/examples/${folder}/${example}.ts`)).default as InitFn;
+
+	return { module };
 };
 
 export const entries = () => {
