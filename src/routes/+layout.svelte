@@ -28,7 +28,7 @@
 					<a
 						href="/"
 						class={clsx(
-							'w-fit text-xl font-medium hover:underline',
+							'text-xl font-medium hover:underline',
 							$page.url.pathname === '/' ? 'text-blue-500 underline opacity-100' : 'opacity-65'
 						)}
 					>
@@ -55,7 +55,7 @@
 								<a
 									{href}
 									class={clsx(
-										'w-fit capitalize hover:underline',
+										'capitalize hover:underline',
 										$page.url.pathname === href ? 'text-blue-500 underline' : 'text-gray-500'
 									)}>{title}</a
 								>

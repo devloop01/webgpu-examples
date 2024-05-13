@@ -9,12 +9,20 @@
 	let wgpu: WebGPU | undefined;
 	let rafId = 0;
 
-	let renderFn: (wgpu: WebGPU) => void | undefined;
+	let initFn = $state<(wgpu: WebGPU) => () => void>();
+	let renderFn: (() => void) | undefined;
 
 	$effect(() => {
 		import(`$lib/webgpu/examples/${group}/${example}.ts`).then((m) => {
-			renderFn = m.default;
+			initFn = m.default;
 		});
+	});
+
+	$effect(() => {
+		if (initFn) {
+			console.log('initFn');
+			renderFn = initFn(wgpu!);
+		}
 	});
 
 	$effect(() => {
