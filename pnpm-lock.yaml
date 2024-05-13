@@ -8,6 +8,12 @@ dependencies:
   clsx:
     specifier: ^2.1.1
     version: 2.1.1
+  webgpu-utils:
+    specifier: ^1.7.1
+    version: 1.7.1
+  wgpu-matrix:
+    specifier: ^2.8.3
+    version: 2.8.3
 
 devDependencies:
   '@sveltejs/adapter-static':
@@ -2606,6 +2612,14 @@ packages:
     dependencies:
       vite: 5.2.11
     dev: true
+
+  /webgpu-utils@1.7.1:
+    resolution: {integrity: sha512-pKrFOrZA5/d7j9XWi9sa9oeh7MbxPzCeDllJEmjrBTyJwElsDrFsLmfNV6zoC6gdm4vsJ7/42fmkimt9sFVnPQ==}
+    dev: false
+
+  /wgpu-matrix@2.8.3:
+    resolution: {integrity: sha512-WfQBYUG/F+3nnIxBzxt+h3rEuxVCJDG0GGXsoP5KbM6J3y0PDy2XpYoENMNxKGK3KqIngelzTqn8hANXkMMWDQ==}
+    dev: false
 
   /which@2.0.2:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}

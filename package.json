@@ -38,6 +38,8 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"clsx": "^2.1.1"
+		"clsx": "^2.1.1",
+		"webgpu-utils": "^1.7.1",
+		"wgpu-matrix": "^2.8.3"
 	}
 }
