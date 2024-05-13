@@ -5,12 +5,16 @@
 
 	const { group, example } = $derived(data);
 
-	let canvas = $state<HTMLCanvasElement | undefined>();
-	let wgpu = $state<WebGPU | undefined>();
+	let canvas = $state<HTMLCanvasElement>();
+	let wgpu = $state<WebGPU>();
 	let rafId = $state(0);
 
-	const renderFn = $derived.by(async () => {
-		return (await import(`$lib/webgpu/examples/${group}/${example}.ts`)).default as (wgpu: WebGPU) => void;
+	let renderFn = $state<(wgpu: WebGPU) => void>();
+
+	$effect(() => {
+		import(`$lib/webgpu/examples/${group}/${example}.ts`).then((m) => {
+			renderFn = m.default;
+		});
 	});
 
 	$effect(() => {
@@ -32,8 +36,7 @@
 	async function render() {
 		if (!wgpu) return;
 
-		const fn = await renderFn;
-		wgpu.render(fn);
+		wgpu.render(renderFn);
 
 		rafId = requestAnimationFrame(render);
 	}
