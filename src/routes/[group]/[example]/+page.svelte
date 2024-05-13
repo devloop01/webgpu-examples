@@ -16,8 +16,8 @@
 
 		if (canvas) {
 			wgpu = new WebGPU({
-				canvas,
-				debug: true
+				canvas
+				// debug: true
 			});
 
 			wgpu.init().then((gpu) => {
@@ -34,7 +34,7 @@
 	});
 
 	async function render() {
-		if (!wgpu) return;
+		if (!wgpu || !renderFn) return;
 
 		wgpu.render(renderFn);
 
