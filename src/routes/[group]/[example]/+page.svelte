@@ -5,11 +5,11 @@
 
 	const { group, example } = $derived(data);
 
-	let canvas = $state<HTMLCanvasElement>();
-	let wgpu = $state<WebGPU>();
-	let rafId = $state(0);
+	let canvas: HTMLCanvasElement | undefined;
+	let wgpu: WebGPU | undefined;
+	let rafId = 0;
 
-	let renderFn = $state<(wgpu: WebGPU) => void>();
+	let renderFn: (wgpu: WebGPU) => void | undefined;
 
 	$effect(() => {
 		import(`$lib/webgpu/examples/${group}/${example}.ts`).then((m) => {
