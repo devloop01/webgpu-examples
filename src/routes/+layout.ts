@@ -105,6 +105,8 @@ export const load = async ({ url }) => {
 	};
 };
 
+export const prerender = true;
+
 function formatPathname(pathname: string) {
 	pathname = pathname.replace(/^\/|\/$/g, '');
 	let words = pathname.split(/[-_]/);
