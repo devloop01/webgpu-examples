@@ -55,16 +55,18 @@
 
 				{#each filteredExamples as { group, examples }}
 					<div class="pb-2">
-						<span class="text-xl capitalize text-gray-400">{group}</span>
-						<div class="flex flex-col py-1">
+						<span class="block pb-1 text-xl capitalize text-gray-400">{group}</span>
+						<div class="flex flex-col">
 							{#each examples as { href, title }}
 								<a
 									{href}
 									class={clsx(
-										'capitalize hover:underline',
+										'py-0.5 capitalize hover:underline',
 										$page.url.pathname === href ? 'text-blue-500 underline' : 'text-gray-500'
-									)}>{title}</a
+									)}
 								>
+									{title}
+								</a>
 							{/each}
 						</div>
 					</div>
