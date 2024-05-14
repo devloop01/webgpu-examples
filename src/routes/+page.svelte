@@ -9,7 +9,7 @@
 	const resources: Resource[] = [
 		{
 			title: 'WebGPU Fundamentals',
-			href: 'https://webgpufundamentals.org/webgpu/lessons/webgpu-fundamentals.html'
+			href: 'https://webgpufundamentals.org/'
 		},
 		{
 			title: 'Tour of WGSL',
