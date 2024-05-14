@@ -52,7 +52,7 @@
 	<a
 		href={githubLink}
 		target="_blank"
-		class="flex size-14 items-center justify-center rounded-full bg-white shadow-md transition-colors hover:bg-gray-300"
+		class="flex size-14 items-center justify-center rounded-full bg-background text-foreground shadow-md transition-colors hover:bg-muted"
 	>
 		<Code class="size-6" />
 	</a>

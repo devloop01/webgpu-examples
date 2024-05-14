@@ -42,27 +42,27 @@
 					</a>
 				</div>
 
-				<div class="pb-2">
+				<div class="pb-4">
 					<input
 						oninput={(event) => {
 							search = event.currentTarget.value;
 						}}
 						type="text"
-						class="h-9 w-full rounded-md border px-2 focus-within:outline-none"
+						class="h-9 w-full rounded-md border bg-transparent px-2 focus-within:outline-none"
 						placeholder="Search"
 					/>
 				</div>
 
 				{#each filteredExamples as { group, examples }}
 					<div class="pb-2">
-						<span class="block pb-1 text-xl capitalize text-gray-400">{group}</span>
-						<div class="flex flex-col">
+						<span class="block pb-1 text-xl capitalize text-muted-foreground">{group}</span>
+						<div class="flex flex-col px-2">
 							{#each examples as { href, title }}
 								<a
 									{href}
 									class={clsx(
 										'py-0.5 capitalize hover:underline',
-										$page.url.pathname === href ? 'text-blue-500 underline' : 'text-gray-500'
+										$page.url.pathname === href ? 'text-blue-500 underline' : 'text-muted-foreground'
 									)}
 								>
 									{title}

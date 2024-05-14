@@ -32,7 +32,7 @@ export default function (wgpu: WebGPU) {
 					view: wgpu.context.getCurrentTexture().createView(),
 					loadOp: 'clear',
 					storeOp: 'store',
-					clearValue: [0.95, 0.95, 0.95, 1.0]
+					clearValue: [0.25, 0.25, 0.25, 1.0]
 				}
 			]
 		});

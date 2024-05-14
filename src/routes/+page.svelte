@@ -31,7 +31,7 @@
 </script>
 
 <div class="flex flex-col gap-4 px-6 py-6 pr-6 lg:py-8">
-	<article class="prose">
+	<article class="prose prose-invert">
 		<h1>WebGPU Examples</h1>
 		<h3>This project is aimed at learning WebGPU</h3>
 		<p>
