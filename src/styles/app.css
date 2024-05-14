@@ -87,6 +87,7 @@
 .shiki {
 	padding: 20px;
 
+	/* https://github.com/shikijs/shiki/issues/3#issuecomment-830564854 */
 	code {
 		counter-reset: step;
 		counter-increment: step 0;
