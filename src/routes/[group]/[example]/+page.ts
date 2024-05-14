@@ -1,3 +1,5 @@
+import { captalize } from '@/lib/utils/index.js';
+import { createMetaTags } from '@/lib/utils/meta-tags.js';
 import type { WebGPU } from '@/lib/webgpu/index.js';
 
 type InitFn = (webgpu: WebGPU) => () => void;
@@ -17,7 +19,13 @@ export const load = async ({ params }) => {
 
 	const initFn = module.default as InitFn;
 
-	return { initFn, githubLink: getGithubLink(folder, example) };
+	return {
+		initFn,
+		githubLink: getGithubLink(folder, example),
+		pageMetaTags: createMetaTags({
+			title: `${captalize(example)} - ${captalize(group)}`
+		})
+	};
 };
 
 export const entries = () => {

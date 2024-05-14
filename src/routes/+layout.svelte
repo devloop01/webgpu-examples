@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { MetaTags } from 'svelte-meta-tags';
+	import extend from 'just-extend';
 	import clsx from 'clsx';
 
 	import '@/styles/app.css';
 
 	let { children, data } = $props();
 
-	const { groupedExamples } = data;
+	const { groupedExamples } = $derived(data);
 
 	let search = $state('');
 
@@ -18,7 +20,11 @@
 			}))
 			.filter(({ examples }) => examples.length > 0)
 	);
+
+	const metaTags = $derived(extend(true, {}, data.baseMetaTags, $page.data.pageMetaTags));
 </script>
+
+<MetaTags {...metaTags} />
 
 <div class="relative flex h-screen flex-col">
 	<div class="grid flex-1 grid-cols-[280px_1fr]">
