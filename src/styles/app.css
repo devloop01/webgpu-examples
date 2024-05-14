@@ -83,3 +83,7 @@
 		@apply min-h-screen bg-background font-inter text-foreground antialiased;
 	}
 }
+
+.shiki {
+	padding: 20px;
+}

@@ -1,8 +1,18 @@
+import { getHighlighter } from 'shiki/bundle/web';
+
 import type { WebGPU } from '@/lib/webgpu/index.js';
 
 type InitFn = (webgpu: WebGPU) => () => void;
 
 const modules = Object.keys(import.meta.glob('$lib/webgpu/examples/**/*.ts'));
+
+const highlighter = await getHighlighter({
+	langs: ['wgsl', 'typescript'],
+	themes: ['one-dark-pro']
+});
+
+const getGithubLink = (group: string, example: string) =>
+	`https://github.com/devloop01/webgpu-examples/blob/main/src/lib/webgpu/examples/${group}/${example}.ts`;
 
 export const load = async ({ params }) => {
 	const { group, example } = params;
@@ -10,9 +20,20 @@ export const load = async ({ params }) => {
 	const [modulePath] = modules.filter((path) => path.includes(group));
 	const [folder] = modulePath.split('/').slice(-2);
 
-	const module = (await import(`$lib/webgpu/examples/${folder}/${example}.ts`)).default as InitFn;
+	const module = await import(`$lib/webgpu/examples/${folder}/${example}.ts`);
 
-	return { module };
+	const initFn = module.default as InitFn;
+	const shader = module?.shader || '// No shader provided';
+
+	const jsCode = initFn.toString().replace(/;/g, ';\n');
+	const wgslCode = shader?.trim();
+
+	const moduleHTML = {
+		javascript: highlighter.codeToHtml(jsCode, { lang: 'typescript', theme: 'one-dark-pro' }),
+		shader: highlighter.codeToHtml(wgslCode, { lang: 'wgsl', theme: 'one-dark-pro' })
+	};
+
+	return { initFn, moduleHTML, githubLink: getGithubLink(folder, example) };
 };
 
 export const entries = () => {

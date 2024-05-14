@@ -46,30 +46,30 @@ export default function (wgpu: WebGPU) {
 	};
 }
 
-const shader = /*wgsl*/ `
-	struct VertexOutput {
-		@builtin(position) position : vec4f
-	}
+export const shader = /*wgsl*/ `
+struct VertexOutput {
+	@builtin(position) position : vec4f
+}
 
-	@vertex
-	fn vsMain(
-		@builtin(vertex_index) vertex_index : u32
-	) -> VertexOutput {
-		const pos = array<vec2f, 3>(
-			vec2f( 0.0,  0.5),
-			vec2f(-0.5, -0.5),
-			vec2f( 0.5, -0.5)
-		);
+@vertex
+fn vsMain(
+	@builtin(vertex_index) vertex_index : u32
+) -> VertexOutput {
+	const pos = array<vec2f, 3>(
+		vec2f( 0.0,  0.5),
+		vec2f(-0.5, -0.5),
+		vec2f( 0.5, -0.5)
+	);
 
-		let xy = pos[vertex_index];
+	let xy = pos[vertex_index];
 
-		var output : VertexOutput;
-		output.position = vec4f(xy, 0.0, 1.0);
-		return output;
-	}
+	var output : VertexOutput;
+	output.position = vec4f(xy, 0.0, 1.0);
+	return output;
+}
 
-	@fragment
-	fn fsMain(fsInput : VertexOutput) -> @location(0) vec4f {
-		return vec4f(1.0, 0.0, 0.0, 1.0);
-	}
+@fragment
+fn fsMain(fsInput : VertexOutput) -> @location(0) vec4f {
+	return vec4f(1.0, 0.0, 0.0, 1.0);
+}
 `;
