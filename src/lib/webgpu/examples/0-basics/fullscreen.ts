@@ -72,44 +72,44 @@ export default function (wgpu: WebGPU) {
 }
 
 export const shader = /*wgsl*/ `
-struct Uniforms {
-	time : f32,
-}
+	struct Uniforms {
+		time : f32,
+	}
 
-struct VertexOutput {
-	@builtin(position) position : vec4f,
-	@location(0) uv : vec2f,
-}
+	struct VertexOutput {
+		@builtin(position) position : vec4f,
+		@location(0) uv : vec2f,
+	}
 
-const positions = array(
-	vec2f(-1.0, -1.0),
-	vec2f( 3.0, -1.0),
-	vec2f(-1.0,  3.0),
-);
-const uvs = array(
-	vec2f(0.0, 0.0),
-	vec2f(2.0, 0.0),
-	vec2f(0.0, 2.0),
-);
+	const positions = array(
+		vec2f(-1.0, -1.0),
+		vec2f( 3.0, -1.0),
+		vec2f(-1.0,  3.0),
+	);
+	const uvs = array(
+		vec2f(0.0, 0.0),
+		vec2f(2.0, 0.0),
+		vec2f(0.0, 2.0),
+	);
 
-@group(0) @binding(0) var<uniform> uniforms : Uniforms;
+	@group(0) @binding(0) var<uniform> uniforms : Uniforms;
 
-@vertex
-fn vsMain(
-	@builtin(vertex_index) vertex_index : u32
-) -> VertexOutput {
-	let xy = positions[vertex_index];
+	@vertex
+	fn vsMain(
+		@builtin(vertex_index) vertex_index : u32
+	) -> VertexOutput {
+		let xy = positions[vertex_index];
 
-	var output : VertexOutput;
-	output.position = vec4f(xy, 0.0, 1.0);
-	output.uv = uvs[vertex_index];
-	return output;
-}
+		var output : VertexOutput;
+		output.position = vec4f(xy, 0.0, 1.0);
+		output.uv = uvs[vertex_index];
+		return output;
+	}
 
-@fragment
-fn fsMain(fsInput : VertexOutput) -> @location(0) vec4f {
-	let color = vec3(0.2, 0.5, 1.0) + 
-				cos(fsInput.uv.xyx + uniforms.time) * 0.25;
-	return vec4f(color, 1.0);
-}
+	@fragment
+	fn fsMain(fsInput : VertexOutput) -> @location(0) vec4f {
+		let color = vec3(0.2, 0.5, 1.0) + 
+					cos(fsInput.uv.xyx + uniforms.time) * 0.25;
+		return vec4f(color, 1.0);
+	}
 `;

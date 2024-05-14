@@ -92,28 +92,28 @@ export default function (wgpu: WebGPU) {
 }
 
 export const shader = /*wgsl*/ `
-struct VertexInput {
-	@location(0) position : vec2f,
-	@location(1) color : vec4f
-}
+	struct VertexInput {
+		@location(0) position : vec2f,
+		@location(1) color : vec4f
+	}
 
 
-struct VertexOutput {
-	@builtin(position) position : vec4f,
-	@location(0) color : vec4f
-}
+	struct VertexOutput {
+		@builtin(position) position : vec4f,
+		@location(0) color : vec4f
+	}
 
-@vertex
-fn vsMain(vsInput : VertexInput) -> VertexOutput {
-	var output : VertexOutput;
-	output.position = vec4f(vsInput.position, 0.0, 1.0);
-	output.color = vsInput.color;
-	return output;
-}
+	@vertex
+	fn vsMain(vsInput : VertexInput) -> VertexOutput {
+		var output : VertexOutput;
+		output.position = vec4f(vsInput.position, 0.0, 1.0);
+		output.color = vsInput.color;
+		return output;
+	}
 
-@fragment
-fn fsMain(fsInput : VertexOutput) -> @location(0) vec4f {
-	// return vec4f(0.2, 0.8, 0.2, 1.0);
-	return fsInput.color;
-}
+	@fragment
+	fn fsMain(fsInput : VertexOutput) -> @location(0) vec4f {
+		// return vec4f(0.2, 0.8, 0.2, 1.0);
+		return fsInput.color;
+	}
 `;

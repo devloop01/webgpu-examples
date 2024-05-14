@@ -1,5 +1,3 @@
-import { getHighlighter } from 'shiki/bundle/web';
-
 import type { WebGPU } from '@/lib/webgpu/index.js';
 
 type InitFn = (webgpu: WebGPU) => () => void;
@@ -18,22 +16,8 @@ export const load = async ({ params }) => {
 	const module = await import(`$lib/webgpu/examples/${folder}/${example}.ts`);
 
 	const initFn = module.default as InitFn;
-	const shader = module?.shader || '// No shader provided';
 
-	const jsCode = initFn.toString().replace(/;/g, ';\n');
-	const wgslCode = shader?.trim();
-
-	const highlighter = await getHighlighter({
-		langs: ['wgsl', 'typescript'],
-		themes: ['one-dark-pro']
-	});
-
-	const moduleHTML = {
-		javascript: highlighter.codeToHtml(jsCode, { lang: 'typescript', theme: 'one-dark-pro' }),
-		shader: highlighter.codeToHtml(wgslCode, { lang: 'wgsl', theme: 'one-dark-pro' })
-	};
-
-	return { initFn, moduleHTML, githubLink: getGithubLink(folder, example) };
+	return { initFn, githubLink: getGithubLink(folder, example) };
 };
 
 export const entries = () => {
