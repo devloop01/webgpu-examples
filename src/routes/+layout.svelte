@@ -35,7 +35,7 @@
 						href="/"
 						class={clsx(
 							'text-xl font-medium hover:underline',
-							$page.url.pathname === '/' ? 'text-blue-500 underline opacity-100' : 'opacity-65'
+							$page.url.pathname === '/' && 'text-blue-500 underline'
 						)}
 					>
 						WebGPU Examples
