@@ -10,6 +10,9 @@ const config = {
 			'@': './src',
 			$components: './src/lib/components',
 			$icons: './src/lib/components/icons'
+		},
+		prerender: {
+			origin: 'https://web-gpu.vercel.app'
 		}
 	}
 };
