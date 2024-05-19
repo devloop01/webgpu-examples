@@ -1,4 +1,5 @@
 import type { WebGPU } from '$lib/webgpu';
+import { mat4 } from 'wgpu-matrix';
 
 export default function (wgpu: WebGPU) {
 	const module = wgpu.device.createShaderModule({
@@ -50,22 +51,27 @@ export default function (wgpu: WebGPU) {
 
 	wgpu.device.queue.writeBuffer(indexBuffer, 0, indices);
 
-	const scale = 0.75;
-	// prettier-ignore
-	const scaleMatrix = new Float32Array([
-		scale, 0.0,   0.0,   0.0,
-		0.0,   scale, 0.0,   0.0,
-		0.0,   0.0,   scale, 0.0,
-		0.0,   0.0,   0.0,   1.0
-	])
+	const matrix = mat4.identity();
+	mat4.scale(matrix, [0.5, 0.75, 1.0], matrix);
+	mat4.translate(matrix, [0.0, 0.0, 0.0], matrix);
+
+	const uniformBufferSize = 16 * 4; // 16 floats, 4 bytes per float
 
 	const uniformBuffer = wgpu.device.createBuffer({
 		label: 'plane uniform buffer',
-		size: scaleMatrix.byteLength,
+		size: uniformBufferSize,
 		usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
 	});
 
-	wgpu.device.queue.writeBuffer(uniformBuffer, 0, scaleMatrix);
+	const uniformValues = new Float32Array(uniformBufferSize / 4);
+
+	// uniform offsets
+	const kMatrixOffset = 0;
+
+	const matrixValue = uniformValues.subarray(kMatrixOffset, kMatrixOffset + 16);
+	matrixValue.set(matrix);
+
+	wgpu.device.queue.writeBuffer(uniformBuffer, 0, uniformValues);
 
 	const bindGroup = wgpu.device.createBindGroup({
 		label: 'plane bind group',
@@ -101,7 +107,7 @@ export default function (wgpu: WebGPU) {
 
 export const shader = /*wgsl*/ `
 	struct Uniforms {
-		scale : mat4x4f
+		matrix : mat4x4f
 	}
 
 	struct VertexInput {
@@ -119,7 +125,7 @@ export const shader = /*wgsl*/ `
 	@vertex
 	fn vsMain(vsInput : VertexInput) -> VertexOutput {
 		var output : VertexOutput;
-		output.position = uniforms.scale * vec4f(vsInput.position, 1.0);
+		output.position = uniforms.matrix * vec4f(vsInput.position, 1.0);
 		output.color = vsInput.color;
 		return output;
 	}
