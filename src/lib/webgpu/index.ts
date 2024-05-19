@@ -1,4 +1,4 @@
-import { clamp } from './utils/math';
+import { clamp } from '$lib/utils/math';
 
 export type WebGPUOptions = {
 	canvas: HTMLCanvasElement;
