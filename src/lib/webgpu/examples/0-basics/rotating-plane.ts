@@ -78,13 +78,15 @@ export default function (wgpu: WebGPU) {
 	return () => {
 		t++;
 
+		const aspect = wgpu.canvas.clientWidth / wgpu.canvas.clientHeight;
+
 		const matrix = mat4.identity();
-		mat4.ortho(0, wgpu.canvas.clientWidth, wgpu.canvas.clientHeight, 0, 1000, -1000, matrix);
-		// mat4.perspective(45, wgpu.canvas.clientWidth / wgpu.canvas.clientHeight, -1000, 1000, matrix);
-		mat4.translate(matrix, [wgpu.canvas.clientWidth / 2, wgpu.canvas.clientHeight / 2, 0], matrix);
+
+		mat4.perspective(degToRad(45), aspect, 1, 2000, matrix);
+
+		mat4.translate(matrix, [0, 0, -1000], matrix);
 		mat4.scale(matrix, [0.5, 0.5, 1.0], matrix);
 		mat4.rotateY(matrix, degToRad(t * 0.5), matrix);
-		mat4.rotateZ(matrix, degToRad(45), matrix);
 
 		// move the origin to center
 		mat4.translate(matrix, [-500, -500, 0], matrix);
