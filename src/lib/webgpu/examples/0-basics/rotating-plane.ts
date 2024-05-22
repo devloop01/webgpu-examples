@@ -85,11 +85,7 @@ export default function (wgpu: WebGPU) {
 		mat4.perspective(degToRad(45), aspect, 1, 2000, matrix);
 
 		mat4.translate(matrix, [0, 0, -1000], matrix);
-		mat4.scale(matrix, [0.5, 0.5, 1.0], matrix);
 		mat4.rotateY(matrix, degToRad(t * 0.5), matrix);
-
-		// move the origin to center
-		mat4.translate(matrix, [-500, -500, 0], matrix);
 
 		matrixValue.set(matrix);
 
@@ -152,15 +148,16 @@ export const shader = /*wgsl*/ `
 `;
 
 function createPlaneVertices() {
-	const size = 1000;
+	const size = 500;
 
 	// prettier-ignore
 	const positions = [
-        0,    size, 0, // 0
-        size, size, 0, // 1
-		0,    0,    0, // 2
-        size, 0,    0, // 3
+        -0.5,  0.5, 0, 
+         0.5,  0.5, 0, 
+		-0.5, -0.5, 0, 
+         0.5, -0.5, 0,
     ]
+	.map((v) => v * size);
 
 	// prettier-ignore
 	const colors = [
