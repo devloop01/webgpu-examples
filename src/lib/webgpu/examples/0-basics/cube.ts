@@ -30,7 +30,7 @@ export default function (wgpu: WebGPU) {
 			targets: [{ format: wgpu.presentationFormat }]
 		},
 		primitive: {
-			cullMode: 'back'
+			cullMode: 'front'
 		}
 	});
 
@@ -66,17 +66,19 @@ export default function (wgpu: WebGPU) {
 
 	let t = 0;
 
+	const matrix = mat4.identity();
+
 	return () => {
 		t++;
 
 		const aspect = wgpu.canvas.clientWidth / wgpu.canvas.clientHeight;
 
-		const matrix = mat4.identity();
-
-		mat4.perspective(degToRad(45), aspect, 1, 2000, matrix);
+		mat4.perspective(degToRad(55), aspect, 1, 2000, matrix);
 
 		mat4.translate(matrix, [0, 0, -1000], matrix);
-		mat4.rotateY(matrix, degToRad(t * -0.5), matrix);
+		mat4.scale(matrix, [0.5, 0.5, 1.0], matrix);
+		mat4.rotateX(matrix, degToRad(t * -0.5), matrix);
+		mat4.rotateY(matrix, degToRad(t * 0.5), matrix);
 
 		matrixValue.set(matrix);
 
@@ -155,7 +157,7 @@ function createCubeVertices(size = 500) {
 	// prettier-ignore
 	const indices = [
         0, 1, 2, 2, 1, 3, // front
-		4, 5, 6, 6, 5, 7, // back
+		4, 6, 5, 6, 7, 5, // back
 		4, 0, 6, 6, 0, 2, // left
 		1, 5, 3, 3, 5, 7, // right
 		4, 5, 0, 0, 5, 1, // top
