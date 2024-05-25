@@ -4,12 +4,12 @@ import { degToRad } from '$lib/utils/math';
 
 export default function (wgpu: WebGPU) {
 	const module = wgpu.device.createShaderModule({
-		label: 'plane shader',
+		label: 'cube shader',
 		code: shader
 	});
 
 	const pipeline = wgpu.device.createRenderPipeline({
-		label: 'plane pipeline',
+		label: 'cube pipeline',
 		layout: 'auto',
 		vertex: {
 			module,
@@ -37,7 +37,7 @@ export default function (wgpu: WebGPU) {
 	const { vertexData, numVertices } = createCubeVertices();
 
 	const vertexBuffer = wgpu.device.createBuffer({
-		label: 'plane vertex buffer',
+		label: 'cube vertex buffer',
 		size: vertexData.byteLength,
 		usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST
 	});
@@ -47,7 +47,7 @@ export default function (wgpu: WebGPU) {
 	const uniformBufferSize = 16 * 4; // 16 floats, 4 bytes per float
 
 	const uniformBuffer = wgpu.device.createBuffer({
-		label: 'plane uniform buffer',
+		label: 'cube uniform buffer',
 		size: uniformBufferSize,
 		usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
 	});
@@ -59,7 +59,7 @@ export default function (wgpu: WebGPU) {
 	const matrixValue = uniformValues.subarray(kMatrixOffset, kMatrixOffset + 16);
 
 	const bindGroup = wgpu.device.createBindGroup({
-		label: 'plane bind group',
+		label: 'cube bind group',
 		layout: pipeline.getBindGroupLayout(0),
 		entries: [{ binding: 0, resource: { buffer: uniformBuffer } }]
 	});
