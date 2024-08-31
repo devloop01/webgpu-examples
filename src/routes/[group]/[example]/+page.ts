@@ -1,39 +1,48 @@
-import { captalize } from '@/lib/utils/index.js';
+import { capitalize } from '@/lib/utils/index.js';
 import { createMetaTags } from '@/lib/utils/meta-tags.js';
 import type { WebGPU } from '@/lib/webgpu/index.js';
 
 type InitFn = (webgpu: WebGPU) => () => void;
 
-const modules = Object.keys(import.meta.glob('$lib/webgpu/examples/**/*.ts'));
+const modules = Object.keys(import.meta.glob('$lib/examples/**/*.ts'));
 
 const getGithubLink = (group: string, example: string) =>
-	`https://github.com/devloop01/webgpu-examples/blob/main/src/lib/webgpu/examples/${group}/${example}.ts`;
+	`https://github.com/devloop01/webgpu-examples/blob/main/src/lib/examples/${group}/${example}.ts`;
 
 export const load = async ({ params }) => {
-	const { group, example } = params;
+	let { group, example } = params;
 
 	const [modulePath] = modules.filter((path) => path.includes(group));
 	const [folder] = modulePath.split('/').slice(-2);
 
-	const module = await import(`$lib/webgpu/examples/${folder}/${example}.ts`);
+	const module = await import(`$lib/examples/${folder}/${example}.ts`);
 
 	const initFn = module.default as InitFn;
+
+	// remove the leading number and dash
+	group = group.replace(/(\d+)-/, '');
+	example = example.replace(/(\d+)-/, '');
+
+	// replace dashes with spaces
+	group = group.replace(/-/g, ' ');
+	example = example.replace(/-/g, ' ');
 
 	return {
 		initFn,
 		githubLink: getGithubLink(folder, example),
 		pageMetaTags: createMetaTags({
-			title: `${captalize(example)} - ${captalize(group)}`
+			title: `${capitalize(example)} - ${capitalize(group)}`
 		})
 	};
 };
 
 export const entries = () => {
 	const paths = modules.map((path) => {
+		// eslint-disable-next-line prefer-const
 		let [group, example] = path.split('/').slice(-2);
 
+		// remove the file extension
 		example = example.replace('.ts', '');
-		group = group.replace(/(\d+)-/, '');
 
 		return { group, example };
 	});

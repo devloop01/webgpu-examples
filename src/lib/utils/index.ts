@@ -9,4 +9,4 @@ export function groupBy<T, K extends PropertyKey>(arr: T[], keySelector: (i: T) 
 	);
 }
 
-export const captalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
+export const capitalize = (str: string) => str.replace(/(\b\w)/gi, (char) => char.toUpperCase());

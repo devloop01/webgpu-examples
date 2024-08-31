@@ -1,7 +1,7 @@
 import { groupBy } from '$lib/utils';
 import { createMetaTags } from '$lib/utils/meta-tags';
 
-const modules = Object.keys(import.meta.glob('$lib/webgpu/examples/**/*.ts'));
+const modules = Object.keys(import.meta.glob('$lib/examples/**/*.ts'));
 
 type Example = {
 	group?: string;
@@ -15,10 +15,11 @@ const examples = modules.map((path) => {
 	// remove the file extension
 	title = title.replace('.ts', '');
 
+	const href = `/${group}/${title}`;
+
 	// remove the leading number and dash
 	group = group.replace(/(\d+)-/, '');
-
-	const href = `/${group}/${title}`;
+	title = title.replace(/(\d+)-/, '');
 
 	// replace dashes with spaces
 	group = group.replace(/-/g, ' ');
