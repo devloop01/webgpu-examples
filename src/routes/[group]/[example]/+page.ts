@@ -16,8 +16,9 @@ export const load = async ({ params }) => {
 	const [folder] = modulePath.split('/').slice(-2);
 
 	const module = await import(`$lib/examples/${folder}/${example}.ts`);
-
 	const initFn = module.default as InitFn;
+
+	const githubLink = getGithubLink(folder, example);
 
 	// remove the leading number and dash
 	group = group.replace(/(\d+)-/, '');
@@ -29,7 +30,7 @@ export const load = async ({ params }) => {
 
 	return {
 		initFn,
-		githubLink: getGithubLink(folder, example),
+		githubLink,
 		pageMetaTags: createMetaTags({
 			title: `${capitalize(example)} - ${capitalize(group)}`
 		})
